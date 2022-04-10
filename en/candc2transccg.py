@@ -243,5 +243,21 @@ def main(args=None):
                             encoding=encoding, pretty_print=True)
     print(result.decode('utf-8'))
 
+#  Added to be called like a library function.
+def candc2transccg(candc_output: etree.ElementTree):
+    """ Wrapper function for main functionality of candc2transccg.py """
+
+    root = candc_output.getroot()
+    ccg_trees = root.findall('ccg')
+
+    transccg_trees = []
+    sentence_num = 1
+    for ccg_tree in ccg_trees:
+        transccg_tree = candc_to_transccg(ccg_tree, sentence_num - 1)
+        transccg_trees.append(transccg_tree)
+        sentence_num += 1
+
+    return make_transccg_xml_tree(transccg_trees)
+
 if __name__ == '__main__':
     main()

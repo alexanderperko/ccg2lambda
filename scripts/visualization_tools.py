@@ -15,7 +15,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import cgi
+import html
 import re
 import sys
 
@@ -49,7 +49,7 @@ def get_fraction_mathml(numerator, denominator, line_thickness = 3,
                + "  <mrow>" + denominator + "</mrow>\n" \
                + "</mfrac>\n"
     if rule:
-        mathml_str = "<mrow><mo>" + cgi.escape(rule) + "</mo>" + mathml_str + "</mrow>"
+        mathml_str = "<mrow><mo>" + html.escape(rule) + "</mo>" + mathml_str + "</mrow>"
     return mathml_str
 
 def get_category_mathml(category):
@@ -101,7 +101,7 @@ def get_semantics_mathml(semantics):
     return "<mtext " \
            + " fontsize='" + str(kOtherSize) + "'" \
            + " color='" + kSemanticsColor + "'>" \
-           + cgi.escape(semantics) \
+           + html.escape(semantics) \
            + "</mtext>\n"
 
 def convert_node_to_mathml(ccg_node, sem_tree, tokens):
@@ -169,10 +169,7 @@ def convert_doc_to_mathml(doc, use_gold_trees=False):
     mathml_str = ""
     for sent_ind, sentence in enumerate(doc.xpath('./sentences/sentence')):
         gold_tree_index = int(sentence.get('gold_tree', -1))
-        if sent_ind < num_sentences - 1:
-            sentence_label = 'Premise {0}'.format(sent_ind)
-        else:
-            sentence_label = 'Conclusion'
+        sentence_label = '{0}'.format(sent_ind)
         sentence_text = get_surf_from_xml_node(sentence)
         ccg_trees = sentence.xpath('./ccg')
         sem_trees = sentence.xpath('./semantics')
@@ -270,8 +267,8 @@ def convert_doc_to_mathml_(doc, verbatim_strings = [], use_gold_trees=False):
     tokens = doc.xpath('./sentences/sentence/tokens')
     assert len(ccg_trees) == len(tokens) 
     num_hypotheses = len(ccg_trees) - 1
-    sentence_ids = ["Premise {0}: ".format(i + 1) for i in range(num_hypotheses)]
-    sentence_ids.append("Conclusion: ")
+    sentence_ids = ["{0}: ".format(i + 1) for i in range(num_hypotheses)]
+    sentence_ids.append("{0}: ".format(num_hypotheses + 1))
     mathml_str = ""
     for i in range(len(ccg_trees)):
         sentence_surface = ' '.join(tokens[i].xpath('token/@surf'))
@@ -309,4 +306,4 @@ def convert_doc_to_mathml_(doc, verbatim_strings = [], use_gold_trees=False):
   </body>
   </html>
   """
-    return cgi.escape(html_str)
+    return html.escape(html_str)

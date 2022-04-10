@@ -152,8 +152,8 @@ def convert_doc_to_latex(doc, verbatim_strings = [], use_gold_trees=False):
     tokens = doc.xpath('//tokens')
     assert len(ccg_trees) == len(tokens) 
     num_hypotheses = len(ccg_trees) - 1
-    sentence_ids = ["Premise {0}: ".format(i + 1) for i in range(num_hypotheses)]
-    sentence_ids.append("Conclusion: ")
+    sentence_ids = ["{0}: ".format(i + 1) for i in range(num_hypotheses)]
+    sentence_ids.append("{0}: ".format(num_hypotheses + 1))
     latex_str = ""
     for i in range(len(ccg_trees)):
         sentence_surface = ' '.join(tokens[i].xpath('token/@surf'))

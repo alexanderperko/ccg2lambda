@@ -8,6 +8,11 @@ import sys
 import textwrap
 
 from nltk.sem.drt import *
+
+#  Added to be called like a library function.
+if __name__ != '__main__':
+    sys.path.append(os.path.dirname(__file__))
+
 from nltk2drs import convert_to_drs
 from nltk2normal import remove_true, rename
 from nltk2tptp import convert_to_tptp_proof
@@ -75,6 +80,13 @@ def main(args = None):
         if ARGS.format == "drsbox":
             formula.pretty_print()
         print(formula_str)
+
+#  Added to be called like a library function.
+def convert_formulas(annotated_ccg_derivation: etree.ElementTree):
+    """ Wrapper function for main functionality of convert_formulas.py """
+    doc = annotated_ccg_derivation.findall('.//document')[0]
+    formulas = get_formulas_from_xml(doc)
+    return [convert_to_drs(lexpr(formula)) for formula in formulas]
 
 if __name__ == '__main__':
     main()

@@ -163,9 +163,8 @@ def convert_vertical_to_mathml(doc, verbatim_strings = [], use_gold_trees=False)
         sem_trees = [None] * len(ccg_trees)
     tokens = doc.xpath('//tokens')
     assert len(ccg_trees) == len(tokens) 
-    num_hypotheses = len(ccg_trees) - 1
-    sentence_ids = ["Premise {0}: ".format(i + 1) for i in range(num_hypotheses)]
-    sentence_ids.append("Conclusion: ")
+    num_hypotheses = len(ccg_trees)
+    sentence_ids = ["{0}: ".format(i + 1) for i in range(num_hypotheses)]
     mathml_str = ""
     for i in range(len(ccg_trees)):
         sentence_surface = ' '.join(tokens[i].xpath('token/@surf'))

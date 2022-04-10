@@ -21,9 +21,9 @@ import time
 def time_count(fn):
   # Funtion wrapper used to measure time consumption
   def _wrapper(*args, **kwargs):
-    start = time.clock()
+    start = time.process_time()
     returns = fn(*args, **kwargs)
-    logging.debug("[time_count]: %s took %fs" % (fn.__name__, time.clock() - start))
+    logging.debug("[time_count]: %s took %fs" % (fn.__name__, time.process_time() - start))
     return returns
   return _wrapper
 
